@@ -100,6 +100,11 @@ class AreaCalculator {
         return shape.calculateArea();
     }
 }
+
+const circle = new Circle(2);
+const area = new AreaCalculator();
+
+console.log(area.calculateArea(obj1));
 ```
 
 **Interview Tip:** Explain how polymorphism and interfaces enable OCP.
@@ -135,6 +140,11 @@ function makeBirdFly(bird: Bird): void {
     bird.fly();  // Crashes if it's a Penguin!
 }
 
+const bird = new Bird();
+const penguin = new Penguin();
+makeBirdFly(bird);// Flying...
+makeBirdFly(penguin);// throw error
+
 // GOOD - Respects LSP
 class Bird {
     eat(): void {
@@ -164,6 +174,12 @@ class Sparrow extends FlyingBird {
 function makeBirdFly(bird: FlyingBird): void {
     bird.fly();  // Safe! Only flying birds accepted
 }
+
+const penguin = new Penguin();
+const sparrow = new Sparrow();
+
+makeBirdFly(penguin)// Error because Penguin is NOT a FlyingBird and also it doesn't have 'fly' property
+makeBirdFly(sparrow);
 ```
 
 **Interview Tip:** This principle ensures that inheritance hierarchies are logical and don't break client expectations.
