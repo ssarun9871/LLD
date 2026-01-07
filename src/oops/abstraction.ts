@@ -48,3 +48,8 @@ class CreditCardPayment implements Payment {
 
 const processPayment = new CreditCardPayment();
 processPayment.pay(1000);
+
+/*
+Note - Use an abstract class when you want to share common behavior and state among related classes.
+Use an interface when you want to define a contract that multiple unrelated classes can implement. 
+*/
