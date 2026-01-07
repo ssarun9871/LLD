@@ -15,29 +15,32 @@ SOLID is an acronym for five design principles in object-oriented programming th
 - Makes code easier to test and maintain
 
 **Example:**
-```java
+```typescript
 // BAD - Multiple responsibilities
 class User {
-    void saveToDatabase() { }
-    void sendEmail() { }
-    void generateReport() { }
+    saveToDatabase(): void { }
+    sendEmail(): void { }
+    generateReport(): void { }
 }
 
 // GOOD - Single responsibility
 class User {
-    // User data only
+    constructor(
+        public name: string,
+        public email: string
+    ) {}
 }
 
 class UserRepository {
-    void saveToDatabase(User user) { }
+    saveToDatabase(user: User): void { }
 }
 
 class EmailService {
-    void sendEmail(User user) { }
+    sendEmail(user: User): void { }
 }
 
 class ReportGenerator {
-    void generateReport(User user) { }
+    generateReport(user: User): void { }
 }
 ```
 
@@ -55,10 +58,10 @@ class ReportGenerator {
 - Reduces risk of breaking existing functionality
 
 **Example:**
-```java
+```typescript
 // BAD - Must modify class to add new shapes
 class AreaCalculator {
-    double calculateArea(Object shape) {
+    calculateArea(shape: any): number {
         if (shape instanceof Circle) {
             // calculate circle area
         } else if (shape instanceof Rectangle) {
@@ -70,23 +73,30 @@ class AreaCalculator {
 
 // GOOD - Open for extension, closed for modification
 interface Shape {
-    double calculateArea();
+    calculateArea(): number;
 }
 
 class Circle implements Shape {
-    public double calculateArea() {
-        // circle area logic
+    constructor(public radius: number) {}
+    
+    calculateArea(): number {
+        return Math.PI * this.radius ** 2;
     }
 }
 
 class Rectangle implements Shape {
-    public double calculateArea() {
-        // rectangle area logic
+    constructor(
+        public width: number,
+        public height: number
+    ) {}
+    
+    calculateArea(): number {
+        return this.width * this.height;
     }
 }
 
 class AreaCalculator {
-    double calculateArea(Shape shape) {
+    calculateArea(shape: Shape): number {
         return shape.calculateArea();
     }
 }
@@ -106,33 +116,53 @@ class AreaCalculator {
 - Violating LSP often indicates poor inheritance design
 
 **Example:**
-```java
+```typescript
 // BAD - Violates LSP
 class Bird {
-    void fly() { }
+    fly(): void {
+        console.log("Flying...");
+    }
 }
 
 class Penguin extends Bird {
-    void fly() {
-        throw new UnsupportedOperationException("Penguins can't fly!");
+    fly(): void {
+        throw new Error("Penguins can't fly!");
     }
+}
+
+// This function expects all birds to fly
+function makeBirdFly(bird: Bird): void {
+    bird.fly();  // Crashes if it's a Penguin!
 }
 
 // GOOD - Respects LSP
 class Bird {
-    void eat() { }
+    eat(): void {
+        console.log("Eating...");
+    }
 }
 
 class FlyingBird extends Bird {
-    void fly() { }
+    fly(): void {
+        console.log("Flying...");
+    }
 }
 
 class Penguin extends Bird {
-    void swim() { }
+    swim(): void {
+        console.log("Swimming...");
+    }
 }
 
 class Sparrow extends FlyingBird {
-    // Can fly
+    fly(): void {
+        console.log("Sparrow flying high!");
+    }
+}
+
+// Now this function only accepts birds that can actually fly
+function makeBirdFly(bird: FlyingBird): void {
+    bird.fly();  // Safe! Only flying birds accepted
 }
 ```
 
@@ -150,41 +180,61 @@ class Sparrow extends FlyingBird {
 - Prevents "fat" interfaces with unnecessary methods
 
 **Example:**
-```java
+```typescript
 // BAD - Fat interface
 interface Worker {
-    void work();
-    void eat();
-    void sleep();
+    work(): void;
+    eat(): void;
+    sleep(): void;
 }
 
 class Robot implements Worker {
-    public void work() { }
-    public void eat() { } // Robots don't eat!
-    public void sleep() { } // Robots don't sleep!
+    work(): void {
+        console.log("Working...");
+    }
+    
+    eat(): void {
+        // Robots don't eat!
+        throw new Error("Robots don't eat");
+    }
+    
+    sleep(): void {
+        // Robots don't sleep!
+        throw new Error("Robots don't sleep");
+    }
 }
 
 // GOOD - Segregated interfaces
 interface Workable {
-    void work();
+    work(): void;
 }
 
 interface Eatable {
-    void eat();
+    eat(): void;
 }
 
 interface Sleepable {
-    void sleep();
+    sleep(): void;
 }
 
 class Human implements Workable, Eatable, Sleepable {
-    public void work() { }
-    public void eat() { }
-    public void sleep() { }
+    work(): void {
+        console.log("Working...");
+    }
+    
+    eat(): void {
+        console.log("Eating...");
+    }
+    
+    sleep(): void {
+        console.log("Sleeping...");
+    }
 }
 
 class Robot implements Workable {
-    public void work() { }
+    work(): void {
+        console.log("Working 24/7...");
+    }
 }
 ```
 
@@ -202,45 +252,54 @@ class Robot implements Workable {
 - Makes code more flexible and easier to test (enables dependency injection)
 
 **Example:**
-```java
+```typescript
 // BAD - High-level class depends on low-level class
 class MySQLDatabase {
-    void save(String data) { }
+    save(data: string): void {
+        console.log("Saving to MySQL:", data);
+    }
 }
 
 class UserService {
-    private MySQLDatabase database = new MySQLDatabase();
+    private database = new MySQLDatabase();
     
-    void saveUser(String userData) {
-        database.save(userData);
+    saveUser(userData: string): void {
+        this.database.save(userData);
     }
 }
 
 // GOOD - Both depend on abstraction
 interface Database {
-    void save(String data);
+    save(data: string): void;
 }
 
 class MySQLDatabase implements Database {
-    public void save(String data) { }
+    save(data: string): void {
+        console.log("Saving to MySQL:", data);
+    }
 }
 
 class MongoDatabase implements Database {
-    public void save(String data) { }
+    save(data: string): void {
+        console.log("Saving to MongoDB:", data);
+    }
 }
 
 class UserService {
-    private Database database;
-    
     // Dependency injection
-    UserService(Database database) {
-        this.database = database;
-    }
+    constructor(private database: Database) {}
     
-    void saveUser(String userData) {
-        database.save(userData);
+    saveUser(userData: string): void {
+        this.database.save(userData);
     }
 }
+
+// Usage
+const mysqlDb = new MySQLDatabase();
+const userService1 = new UserService(mysqlDb);
+
+const mongoDb = new MongoDatabase();
+const userService2 = new UserService(mongoDb);
 ```
 
 **Interview Tip:** DIP is the foundation of dependency injection frameworks and makes testing much easier since you can inject mock dependencies.
