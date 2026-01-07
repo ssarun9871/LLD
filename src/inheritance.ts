@@ -1,3 +1,5 @@
+//Inheritance allows classes to inherit common properties from other parent class
+
 class Vehicle{
     brand: string;
     model: string;
