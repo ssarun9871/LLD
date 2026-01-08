@@ -110,10 +110,6 @@ interface PaymentProcessor {
   process(amount: number): void;
 }
 
-interface PaymentValidator {
-  validate(amount: number): boolean;
-}
-
 interface PaymentNotifier {
   notify(amount: number): void;
 }
@@ -127,13 +123,6 @@ class CreditCardProcessor implements PaymentProcessor {
 class PayPalProcessor implements PaymentProcessor {
   process(amount: number): void {
     console.log(`Processing $${amount} via PayPal`);
-  }
-}
-
-class FraudValidator implements PaymentValidator {
-  validate(amount: number): boolean {
-    console.log("Running fraud detection...");
-    return amount <= 10000;
   }
 }
 
@@ -153,16 +142,10 @@ class SMSNotifier implements PaymentNotifier {
 class PaymentService {
   constructor(
     private processor: PaymentProcessor,
-    private validator?: PaymentValidator,
     private notifiers: PaymentNotifier[] = []
   ) {}
 
   execute(amount: number): void {
-    if (this.validator && !this.validator.validate(amount)) {
-      console.log("Payment failed validation");
-      return;
-    }
-
     this.processor.process(amount);
     this.notifiers.forEach(n => n.notify(amount));
   }
@@ -171,7 +154,6 @@ class PaymentService {
 // Usage
 const securePayPal = new PaymentService(
   new PayPalProcessor(),
-  new FraudValidator(),
   [new EmailNotifier()]
 );
 
@@ -426,4 +408,7 @@ function getUserStatus(user: User): string {
 ```typescript
 function getUserStatus(user: User): string {
     const status = user.isActive ? 'active' : 'inactive';
-    const tier = user.isPremium ? 
+    const tier = user.isPremium ? 'premium' : 'free';
+    return `${status}-${tier}`;
+}
+```
