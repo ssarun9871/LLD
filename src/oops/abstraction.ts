@@ -6,8 +6,12 @@ essential information while hiding implementation details.
 How to Achieve Abstraction
 ----------------------------
 In Java, TypeScript, and OOP in general, abstraction is achieved using:
-1. Abstract classes
-2. Interfaces
+1. Abstract classes (tight coupling)
+2. Interfaces (loose coupling)
+
+Abstract class vs Interfaces
+-Abstract class is better for shared behaviour
+-Interfaces is better for DIP (Dependency Inversion Principle) and composition
 
 Abstract Class:
 - Cannot be instantiated directly
