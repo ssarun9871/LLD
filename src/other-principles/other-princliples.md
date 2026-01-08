@@ -1,26 +1,15 @@
 # Top 4 Design Principles - Interview Preparation
 
-## Quick Overview
-These 4 principles are frequently asked in interviews alongside SOLID. Master these for maximum interview success.
-
 ---
 
 ## 1. DRY (Don't Repeat Yourself)
 
 ### Definition
-"DRY stands for Don't Repeat Yourself. It means that every piece of knowledge or logic should exist in exactly one place in your codebase. It's important because:
+DRY stands for Don't Repeat Yourself. It means that every piece of knowledge or logic should exist in exactly one place in your codebase. It's important because:
 - When requirements change, you only update one location
 - It reduces bugs since there's no chance of updating logic in one place but forgetting another
-- It makes code more maintainable and easier to understand
-- It naturally leads to better code organization"
 
 In simple terms: Don't write the same code twice. Extract common functionality into reusable components.
-
-### Why It Matters
-- **Single Source of Truth**: Changes only need to happen in one place
-- **Easier Maintenance**: Fix bugs once, not in multiple places
-- **Reduces Errors**: Less code = fewer places for bugs to hide
-- **Better Readability**: Clear, organized code structure
 
 ### Common Interview Questions
 
@@ -69,7 +58,6 @@ class Penguin extends Bird {
   }
 }
 
-
 // Problem 1: Penguin breaks parent behaviour and violates LSP
 // Problem 2: Hard to extend without bugs
 // Problem 3: Behaviour forced even when it doesn't make sense
@@ -79,6 +67,7 @@ class Penguin extends Bird {
 
 ```typescript
 // ✅ GOOD - Using Composition
+// Penguin has a swin behaviour (HAS-A relationship)
 class SwimBehavior {
   swim(): void {
     console.log("Swimming...");
@@ -249,7 +238,7 @@ Now each bird has appropriate movement behavior without inheritance issues."
 
 ---
 
-## 3. Separation of Concerns (SoC) ⭐⭐⭐
+## 3. Separation of Concerns (SoC)
 
 ### Definition
 **Different parts of a program should handle different responsibilities. Each module should address a separate concern.**
@@ -342,14 +331,6 @@ class OrderService {
 }
 
 ```
-
-**Benefits:**
-- ✅ Each class has ONE clear responsibility
-- ✅ Easy to test each concern in isolation
-- ✅ Can reuse PriceCalculator in other contexts
-- ✅ Can swap NotificationService for SMS without touching other code
-- ✅ Bug in email? Only look in NotificationService
-
 
 ### Common Interview Questions
 
