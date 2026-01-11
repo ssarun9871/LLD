@@ -77,7 +77,7 @@ interface Shape {
 }
 
 class Circle implements Shape {
-    constructor(public radius: number) {}
+    constructor(public radius: number) {}//shorthand constructor
     
     calculateArea(): number {
         return Math.PI * this.radius ** 2;
@@ -145,41 +145,34 @@ const penguin = new Penguin();
 makeBirdFly(bird);// Flying...
 makeBirdFly(penguin);// throw error
 
-// GOOD - Respects LSP
-class Bird {
-    eat(): void {
-        console.log("Eating...");
-    }
+// GOOD Approach (Interface Segregation + LSP)
+interface Bird {
+  eat(): void;
+}
+interface Flyable {
+  fly(): void;
 }
 
-class FlyingBird extends Bird {
-    fly(): void {
-        console.log("Flying...");
-    }
+class Sparrow implements Bird, Flyable {
+  eat(): void { console.log("Eating..."); }
+  fly(): void { console.log("Sparrow flying!"); }
 }
 
-class Penguin extends Bird {
-    swim(): void {
-        console.log("Swimming...");
-    }
+class Penguin implements Bird {
+  eat(): void { console.log("Eating..."); }
+  swim(): void { console.log("Swimming..."); }
 }
 
-class Sparrow extends FlyingBird {
-    fly(): void {
-        console.log("Sparrow flying high!");
-    }
+function makeBirdFly(bird: Flyable): void {
+  bird.fly(); // ✅ Type-safe, only accepts flyable birds
 }
 
-// Now this function only accepts birds that can actually fly
-function makeBirdFly(bird: FlyingBird): void {
-    bird.fly();  // Safe! Only flying birds accepted
-}
-
-const penguin = new Penguin();
 const sparrow = new Sparrow();
+const penguin= new Penguin();
 
-makeBirdFly(penguin)// Error because Penguin is NOT a FlyingBird and also it doesn't have 'fly' property
-makeBirdFly(sparrow);
+// Usage
+makeBirdFly(sparrow); // ✅ Works
+makeBirdFly(penguin); // ❌ Compile error - Good! Caught at compile time
 ```
 
 **Interview Tip:** This principle ensures that inheritance hierarchies are logical and don't break client expectations.
