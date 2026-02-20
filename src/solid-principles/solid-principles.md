@@ -44,8 +44,6 @@ class ReportGenerator {
 }
 ```
 
-**Interview Tip:** Mention that SRP improves code organization and makes debugging easier since each class has a clear purpose.
-
 ---
 
 ## 2. Open/Closed Principle (OCP)

@@ -11,7 +11,7 @@ Instead of using if/else or switch statements to choose behavior, you:
 
 The three components
 1. Strategy Interface - defines the contract that all strategies must follow.
-2. Concete Strategies - different implementations of the same behaviour.
+2. Concrete Strategies - different implementations of the same behaviour.
 3. Context Class - use a strategy and allows switching between them.
 
 When and Where to use strategy pattern

@@ -5,7 +5,7 @@ essential information while hiding implementation details.
 ----------------------------
 How to Achieve Abstraction
 ----------------------------
-In Java, TypeScript, and OOP in general, abstraction is achieved using:
+Abstraction is achieved using:
 1. Abstract classes (tight coupling)
 2. Interfaces (loose coupling)
 
@@ -23,7 +23,7 @@ Abstract Methods:
 - Can be declared only inside an abstract class
 */
 
-//Abstraction using class
+//Abstraction using abstract class
 abstract class Vehicle {
     abstract start(): void; // no implementation
 }
@@ -54,6 +54,7 @@ const processPayment = new CreditCardPayment();
 processPayment.pay(1000);
 
 /*
-Note - Use an abstract class when you want to share common behavior and state among related classes.
+Note - 
+Use an abstract class when you want to share common behavior and state among related classes.
 Use an interface when you want to define a contract that multiple unrelated classes can implement. 
 */
