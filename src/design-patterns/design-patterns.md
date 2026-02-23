@@ -3,7 +3,7 @@
 ## Behavioral Patterns (~50-55% of interviews)
 
 ### Strategy Pattern
-**Use when:** You're replacing if/else logic with interchangeable behaviors.
+**Use when:** You're replacing switch logic with interchangeable behaviors.
 - **Example:** Payment methods (Credit Card, PayPal, UPI)
 - **Example:** Sorting algorithms (QuickSort, MergeSort, BubbleSort)
 
